@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import "./App.css";
 import PostForm from "./components/PostForm";
 import PostList from "./components/PostList";
+import MyInput from "./components/UI/input/MyInput";
 import MySelect from "./components/UI/select/MySelect";
 
 function App() {
@@ -24,6 +25,23 @@ function App() {
   ]);
 
   const [selectedSort, setSelectedSort] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const sortedPosts = useMemo(() => {
+    console.log("ОТРАБОТАЛА SORTEDPOSTS");
+    if (selectedSort) {
+      [...posts].sort((post1, post2) =>
+        post1[selectedSort].localeCompare(post2[selectedSort])
+      );
+    }
+    return posts;
+  }, [selectedSort, posts]);
+
+  const sortedAndSearchedPosts = useMemo(() => {
+    return sortedPosts.filter((post) =>
+      post.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [searchQuery, sortedPosts]);
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
@@ -35,9 +53,6 @@ function App() {
 
   const sortPosts = (sort) => {
     setSelectedSort(sort);
-    setPosts(
-      [...posts].sort((post1, post2) => post1[sort].localeCompare(post2[sort]))
-    );
   };
 
   return (
@@ -45,6 +60,11 @@ function App() {
       <PostForm create={createPost}></PostForm>
       <hr style={{ margin: "15px 0" }} />
       <div>
+        <MyInput
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Поиск..."
+        />
         <MySelect
           value={selectedSort}
           onChange={sortPosts}
@@ -55,8 +75,12 @@ function App() {
           ]}
         />
       </div>
-      {posts.length ? (
-        <PostList remove={removePost} posts={posts} title="Список постов 1" />
+      {sortedAndSearchedPosts.length ? (
+        <PostList
+          remove={removePost}
+          posts={sortedAndSearchedPosts}
+          title="Список постов 1"
+        />
       ) : (
         <h1 style={{ textAlign: "center" }}>Посты не найдены</h1>
       )}
