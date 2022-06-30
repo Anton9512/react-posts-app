@@ -23,6 +23,16 @@ function App() {
       title: "cc",
       body: "гг",
     },
+    {
+      id: 4,
+      title: "нн",
+      body: "лл",
+    },
+    {
+      id: 5,
+      title: "дд",
+      body: "мм",
+    },
   ]);
 
   const [filter, setFilter] = useState({ sort: "", query: "" });
@@ -30,7 +40,7 @@ function App() {
 
   const sortedPosts = useMemo(() => {
     if (filter.sort) {
-      [...posts].sort((post1, post2) =>
+      return [...posts].sort((post1, post2) =>
         post1[filter.sort].localeCompare(post2[filter.sort])
       );
     }
