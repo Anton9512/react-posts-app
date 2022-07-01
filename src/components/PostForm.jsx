@@ -17,6 +17,7 @@ const PostForm = ({ create }) => {
 
   return (
     <form>
+      <h3>Создать пост</h3>
       <MyInput
         value={post.title}
         onChange={(e) => setPost({ ...post, title: e.target.value })}
