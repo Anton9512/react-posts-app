@@ -2,9 +2,6 @@ import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/UI/Navbar/Navbar";
-import About from "./pages/About";
-import Error from "./pages/Error";
-import Posts from "./pages/Posts";
 import AppRouter from "./components/AppRouter";
 
 function App() {
